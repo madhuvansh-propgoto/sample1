@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Users Table</title>
+
+  <style>
+    /* Subtle page background */
+    body {
+      background-color: peachpuff;
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    thead {
+      background-color: #e9edf3;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      font-weight: 600;
+      color: black;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: lightgray;
+    }
+
+    tbody tr:hover {
+      background-color: palegoldenrod;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Users</h2>
+
+  <p id="loading">Loading...</p>
+
+  <table id="usersTable" border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Company</th>
+        <th>Gender</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch("https://dummyjson.com/users?limit=30")
+      .then(response => response.json())
+      .then(data => {
+
+        const users = data.users;
+        const tableBody = document.querySelector("#usersTable tbody");
+        const loading = document.getElementById("loading");
+
+        loading.style.display = "none";
+
+        users.forEach(user => {
+
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${user.firstName} ${user.lastName}</td>
+            <td>${user.email}</td>
+            <td>${user.age}</td>
+            <td>${user.company.name}</td>
+            <td>${user.gender}</td>
+          `;
+
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        document.getElementById("loading").innerText = "Failed to load data.";
+        console.error("Error:", error);
+      });
+  </script>
+
+</body>
+
+</html>
